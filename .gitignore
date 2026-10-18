@@ -1,0 +1,16 @@
+# Identifiants base de données
+config/bdd.php
+
+# Outils et scripts temporaires, uniquement sur mon PC
+outils/
+creer_admin.php
+test_auth.php
+switch_admin.php
+
+# Fichiers système et éditeur
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Images envoyées par l'admin (si tu ne veux pas les versionner)
+# uploads/
