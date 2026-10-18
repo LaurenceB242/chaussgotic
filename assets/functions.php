@@ -139,3 +139,27 @@ function uploadImage(array $file, string $dossier, &$erreur) {
     }
     return $nom;
 }
+/* ---------- Uploads multiples ---------- */
+
+function fichiersMultiples(array $f): array {
+    $liste = [];
+    if (!isset($f['name']) || !is_array($f['name'])) {
+        return $liste;
+    }
+    foreach ($f['name'] as $i => $nom) {
+        $liste[] = [
+            'name'     => $nom,
+            'type'     => $f['type'][$i],
+            'tmp_name' => $f['tmp_name'][$i],
+            'error'    => $f['error'][$i],
+            'size'     => $f['size'][$i],
+        ];
+    }
+    return $liste;
+}
+
+function supprimerFichier(string $dossier, ?string $nom): void {
+    if ($nom && is_file($dossier . '/' . basename($nom))) {
+        unlink($dossier . '/' . basename($nom));
+    }
+}
