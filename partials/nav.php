@@ -1,6 +1,7 @@
 <nav class="navbar">
-   <a href="index.php" class="logo">
-    <img src="images/logo/gothrose.svg" alt="logo">
+<a href="index.php" class="logo">
+    <img src="./images/logo/gothrose.svg" alt="chaussGotic" height="50">
+    <p>ChaussGoth</p>
 </a>
     <div class="menu">
         <a href="index.php?action=chaussures">Chaussures</a>

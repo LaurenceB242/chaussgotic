@@ -1,0 +1,34 @@
+Options -Indexes
+ErrorDocument 400 /webdev/sitechaussgotic/erreur.php?code=400
+ErrorDocument 403 /webdev/sitechaussgotic/erreur.php?code=403
+ErrorDocument 404 /webdev/sitechaussgotic/erreur.php?code=404
+ErrorDocument 500 /webdev/sitechaussgotic/erreur500.html
+# Logo et décorations : fichiers à moi, SVG autorisés
+RewriteRule ^images/(logo|decoration)/ - [L]
+
+# images/ : aucune exécution de code ni de page
+RewriteRule ^images/.*\.(php|phtml|phar|html?|svg)$ - [F,L]
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Dossiers internes : jamais accessibles par URL
+    RewriteRule ^(config|pages|partials|admin/partials)/ - [F,L]
+
+    # assets/ : le CSS et le JS restent accessibles, mais pas le PHP
+    RewriteRule ^assets/.*\.php$ - [F,L]
+
+    # images/ : aucune exécution de code ni de page
+    RewriteRule ^images/.*\.(php|phtml|phar|html?|svg)$ - [F,L]
+
+    # Fichiers sensibles
+    RewriteRule ^(creer_admin|test_auth|reset_admin)\.php$ - [F,L]
+    RewriteRule \.(sql|md)$ - [F,L]
+    RewriteRule (^|/)\.git - [F,L]
+</IfModule>
+

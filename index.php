@@ -15,8 +15,8 @@ $action = $_GET['action'] ?? 'home';
 $fichier = $pages[$action] ?? null;
 
 if ($fichier === null) {
-    http_response_code(404);
-    $fichier = 'pages/404.php';
+    require 'erreur.php';   // affiche la page 404 et envoie le vrai code 404
+    exit;
 } elseif (in_array($action, $protegees, true)) {
     exigerConnexion();
 }

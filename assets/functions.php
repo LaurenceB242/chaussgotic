@@ -44,8 +44,7 @@ function exigerConnexion() {
 
 function exigerAdmin() {
     if (!estAdmin()) {
-        http_response_code(403);
-        require __DIR__ . '/../403.php';
+        header('Location: /webdev/sitechaussgotic/erreur.php?code=403');
         exit;
     }
 }
