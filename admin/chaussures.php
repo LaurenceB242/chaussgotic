@@ -1,4 +1,5 @@
 <?php
+$titre = 'Chaussures'; require 'partials/header.php';
 require_once '../assets/functions.php';
 exigerAdmin();
 
@@ -59,5 +60,4 @@ $chaussures = fetchAll($bdd, "
         <tr><td colspan="7">Aucune chaussure pour l'instant.</td></tr>
     <?php endif; ?>
 </table>
-</body>
-</html>
+<?php require 'partials/footer.php'; ?>

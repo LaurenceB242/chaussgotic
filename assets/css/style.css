@@ -87,3 +87,20 @@ button:disabled { opacity: .4; cursor: not-allowed; }
     width: auto;       /* Conserve les proportions d'origine */
     display: block;
 }
+.auth {
+    max-width: 420px;
+    margin: 60px auto;
+    padding: 30px;
+    border: 1px solid #555;
+    background: rgba(10, 10, 10, .85);
+    position: relative;
+    z-index: 1;
+}
+.auth h1 { text-align: center; margin-top: 0; letter-spacing: 2px; }
+.auth label { display: block; margin-bottom: 16px; }
+.auth input { width: 100%; box-sizing: border-box; margin-top: 6px; padding: 10px; }
+.auth button { width: 100%; padding: 12px; margin-top: 6px; letter-spacing: 1px; }
+.auth .lien { text-align: center; margin-top: 18px; color: #999; }
+.auth .lien a { text-decoration: underline; }
+.auth .logo-auth { display: block; margin: 0 auto 10px; height: 60px; }
+.succes { color: #8fd18f; }

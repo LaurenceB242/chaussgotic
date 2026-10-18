@@ -1,4 +1,5 @@
 <?php
+$titre = 'Chaussures'; require 'partials/header.php';
 require_once '../assets/functions.php';
 exigerAdmin();
 
@@ -104,5 +105,4 @@ $pointures = fetchAll($bdd, "SELECT id, valeur FROM pointures ORDER BY valeur");
 </form>
 
 <?php endif; ?>
-</body>
-</html>
+<?php require 'partials/footer.php'; ?>

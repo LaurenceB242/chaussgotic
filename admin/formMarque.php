@@ -1,4 +1,5 @@
 <?php
+$titre = 'Chaussures'; require 'partials/header.php';
 require_once '../assets/functions.php';
 exigerAdmin();
 
@@ -46,5 +47,4 @@ if ($id > 0) {
     <button type="submit">Enregistrer</button>
     <a href="marques.php">Annuler</a>
 </form>
-</body>
-</html>
+<?php require 'partials/footer.php'; ?>

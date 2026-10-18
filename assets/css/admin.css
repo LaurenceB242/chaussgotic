@@ -1,0 +1,8 @@
+:root { --bs-primary: #a78bfa; --bs-primary-rgb: 167, 139, 250; }
+body { background: #0b0b10; }
+.admin-nav { background: #050508; }
+.admin-nav .nav-link.active { color: #a78bfa; border-bottom: 2px solid #a78bfa; }
+.card { background: #14141c; border-color: #2a2a38; }
+.stat-nombre { font-size: 2.2rem; font-weight: 700; color: #a78bfa; }
+.table > :not(caption) > * > * { background: transparent; }
+.vignette { width: 56px; height: 56px; object-fit: cover; border-radius: 4px; }
