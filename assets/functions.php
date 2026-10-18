@@ -76,3 +76,16 @@ function mdpAReHasher($hash) {
     $options = ($algo === PASSWORD_BCRYPT) ? ['cost' => 13] : optionsMdp();
     return password_needs_rehash($hash, $algo, $options);
 }
+
+/* ---------- CSRF ---------- */
+
+function csrfToken() {
+    if (empty($_SESSION['csrf'])) {
+        $_SESSION['csrf'] = bin2hex(random_bytes(32));
+    }
+    return $_SESSION['csrf'];
+}
+
+function csrfValide($token) {
+    return isset($_SESSION['csrf']) && hash_equals($_SESSION['csrf'], (string)$token);
+}
