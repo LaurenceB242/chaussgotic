@@ -49,3 +49,30 @@ function exigerAdmin() {
         exit;
     }
 }
+
+/* ---------- Mots de passe ---------- */
+
+function optionsMdp() {
+    return [
+        'memory_cost' => 65536, // 64 Mo
+        'time_cost'   => 4,     // 4 itérations
+        'threads'     => 1,
+    ];
+}
+
+function algoMdp() {
+    // Argon2id si PHP le supporte, sinon bcrypt en secours
+    return defined('PASSWORD_ARGON2ID') ? PASSWORD_ARGON2ID : PASSWORD_BCRYPT;
+}
+
+function hasherMdp($mdp) {
+    $algo = algoMdp();
+    $options = ($algo === PASSWORD_BCRYPT) ? ['cost' => 13] : optionsMdp();
+    return password_hash($mdp, $algo, $options);
+}
+
+function mdpAReHasher($hash) {
+    $algo = algoMdp();
+    $options = ($algo === PASSWORD_BCRYPT) ? ['cost' => 13] : optionsMdp();
+    return password_needs_rehash($hash, $algo, $options);
+}

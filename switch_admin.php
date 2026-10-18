@@ -1,0 +1,1 @@
+$hash = hasherMdp('ChangeMoi123!');
