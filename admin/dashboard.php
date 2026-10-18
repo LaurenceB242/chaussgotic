@@ -10,8 +10,9 @@ exigerAdmin();
     <title>Dashboard</title>
 </head>
 <body>
-    <h1>Dashboard admin</h1>
-    <p>Bienvenue <?= e($_SESSION['user']['nom']) ?></p>
-    <a href="../deconnexion.php">Déconnexion</a>
+<?php require 'partials/nav.php'; ?>
+
+<h1>Dashboard admin</h1>
+<p>Bienvenue <?= e($_SESSION['user']['nom']) ?></p>
 </body>
 </html>
