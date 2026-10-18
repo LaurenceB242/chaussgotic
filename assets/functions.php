@@ -163,3 +163,51 @@ function supprimerFichier(string $dossier, ?string $nom): void {
         unlink($dossier . '/' . basename($nom));
     }
 }
+
+/* ---------- Affichage d'une carte chaussure ---------- */
+
+function carteChaussure(array $c): void { ?>
+    <a href="index.php?action=chaussure&id=<?= (int)$c['id'] ?>" class="cards">
+        <div class="cover">
+            <?php if (!empty($c['image'])): ?>
+                <img src="images/chaussures/<?= e($c['image']) ?>" alt="<?= e($c['nom']) ?>">
+            <?php endif; ?>
+        </div>
+        <div class="title"><?= e($c['nom']) ?></div>
+        <div class="marque"><?= e($c['marque']) ?></div>
+        <div class="prix"><?= number_format((float)$c['prix'], 2, ',', ' ') ?> €</div>
+    </a>
+<?php }
+
+/* ---------- Panier (stocké en session) ---------- */
+
+function nombreArticlesPanier(): int {
+    return array_sum($_SESSION['panier'] ?? []);
+}
+
+function panierLignes($bdd): array {
+    $lignes = [];
+    foreach ($_SESSION['panier'] ?? [] as $cle => $qte) {
+        [$idC, $idP] = array_map('intval', explode(':', $cle));
+
+        $l = fetchOne($bdd, "
+            SELECT c.id, c.nom, c.prix, p.id AS id_pointure, p.valeur AS pointure,
+                   COALESCE(s.quantite, 0) AS stock,
+                   (SELECT path FROM images WHERE id_chaussure = c.id
+                    ORDER BY date_ajout ASC, id ASC LIMIT 1) AS image
+            FROM chaussures c
+            JOIN pointures p ON p.id = ?
+            LEFT JOIN stock s ON s.id_chaussure = c.id AND s.id_pointure = p.id
+            WHERE c.id = ?", [$idP, $idC]);
+
+        if (!$l) {                       // chaussure supprimée depuis : on retire la ligne
+            unset($_SESSION['panier'][$cle]);
+            continue;
+        }
+        $l['cle']        = $cle;
+        $l['quantite']   = (int)$qte;
+        $l['sous_total'] = round((float)$l['prix'] * (int)$qte, 2);
+        $lignes[] = $l;
+    }
+    return $lignes;
+}
