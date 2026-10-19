@@ -41,3 +41,7 @@ L’accès à cet espace est réservé aux comptes administrateurs.
 ## Périmètre actuel
 
 Le site permet d’enregistrer une commande et d’en consulter le récapitulatif. **Le paiement en ligne, la gestion de livraison et le suivi de colis ne font pas partie des fonctionnalités visibles dans la version actuelle.** La validation d’une commande ne doit donc pas être présentée comme un paiement ou une expédition effectués.
+
+## Licence
+
+Ce projet est distribué sous licence [MIT](./LICENSE).
