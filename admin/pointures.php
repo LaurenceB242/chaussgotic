@@ -1,5 +1,4 @@
 <?php
-$titre = 'Chaussures'; require 'partials/header.php';
 require_once '../assets/functions.php';
 exigerAdmin();
 
@@ -12,60 +11,67 @@ $pointures = fetchAll($bdd, "
     GROUP BY p.id
     ORDER BY p.valeur
 ");
+
+$titre = 'Pointures';
+require 'partials/header.php';
 ?>
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pointures</title>
-</head>
-<body>
-<?php require 'partials/nav.php'; ?>
+<h1 class="h3 mb-4">Pointures</h1>
 
-<h1>Pointures</h1>
-
-<h2>Ajouter</h2>
-<form method="post" action="treatmentPointure.php">
-    <input type="hidden" name="csrf" value="<?= e(csrfToken()) ?>">
-    <input type="hidden" name="action" value="add">
-    <label>Pointure (ex. 42 ou 42.5)
-        <input type="text" name="valeur" inputmode="decimal" required style="width:6em">
-    </label>
-    <button type="submit">Ajouter</button>
-</form>
-
-<h2>Ajouter une série</h2>
-<form method="post" action="treatmentPointure.php">
-    <input type="hidden" name="csrf" value="<?= e(csrfToken()) ?>">
-    <input type="hidden" name="action" value="add_serie">
-    <label>De <input type="number" name="debut" min="15" max="60" value="36" style="width:5em"></label>
-    <label>à <input type="number" name="fin" min="15" max="60" value="46" style="width:5em"></label>
-    <label><input type="checkbox" name="demi" value="1"> avec les demi-pointures</label>
-    <button type="submit">Ajouter la série</button>
-</form>
-
-<h2>Liste</h2>
-<table>
-    <tr><th>Pointure</th><th>Chaussures concernées</th><th>Stock total</th><th>Action</th></tr>
-    <?php foreach ($pointures as $p): ?>
-    <tr>
-        <td><?= rtrim(rtrim(number_format((float)$p['valeur'], 1, '.', ''), '0'), '.') ?></td>
-        <td><?= (int)$p['nb_chaussures'] ?></td>
-        <td><?= (int)$p['stock_total'] ?></td>
-        <td>
-            <form method="post" action="treatmentPointure.php" style="display:inline"
-                  onsubmit="return confirm('Supprimer cette pointure ?');">
+<div class="row g-3 mb-4">
+    <div class="col-md-6">
+        <div class="card h-100"><div class="card-body">
+            <h2 class="h6">Ajouter une pointure</h2>
+            <form method="post" action="treatmentPointure.php" class="d-flex gap-2">
                 <input type="hidden" name="csrf" value="<?= e(csrfToken()) ?>">
-                <input type="hidden" name="action" value="delete">
-                <input type="hidden" name="id" value="<?= (int)$p['id'] ?>">
-                <button type="submit">Supprimer</button>
+                <input type="hidden" name="action" value="add">
+                <input class="form-control" type="text" name="valeur" inputmode="decimal" placeholder="42 ou 42.5" required>
+                <button class="btn btn-primary" type="submit">Ajouter</button>
             </form>
-        </td>
-    </tr>
+        </div></div>
+    </div>
+    <div class="col-md-6">
+        <div class="card h-100"><div class="card-body">
+            <h2 class="h6">Ajouter une série</h2>
+            <form method="post" action="treatmentPointure.php" class="d-flex flex-wrap gap-2 align-items-center">
+                <input type="hidden" name="csrf" value="<?= e(csrfToken()) ?>">
+                <input type="hidden" name="action" value="add_serie">
+                <input class="form-control" style="width:90px" type="number" name="debut" min="15" max="60" value="36">
+                à
+                <input class="form-control" style="width:90px" type="number" name="fin" min="15" max="60" value="46">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="demi" value="1" id="demi">
+                    <label class="form-check-label" for="demi">demi-pointures</label>
+                </div>
+                <button class="btn btn-primary" type="submit">Ajouter la série</button>
+            </form>
+        </div></div>
+    </div>
+</div>
+
+<div class="card"><div class="table-responsive">
+<table class="table table-hover align-middle m-0">
+    <thead><tr><th>Pointure</th><th>Chaussures concernées</th><th>Stock total</th><th class="text-end">Action</th></tr></thead>
+    <tbody>
+    <?php foreach ($pointures as $p): ?>
+        <tr>
+            <td><?= rtrim(rtrim(number_format((float)$p['valeur'], 1, '.', ''), '0'), '.') ?></td>
+            <td><?= (int)$p['nb_chaussures'] ?></td>
+            <td><?= (int)$p['stock_total'] ?></td>
+            <td class="text-end">
+                <form method="post" action="treatmentPointure.php" class="d-inline"
+                      onsubmit="return confirm('Supprimer cette pointure ?');">
+                    <input type="hidden" name="csrf" value="<?= e(csrfToken()) ?>">
+                    <input type="hidden" name="action" value="delete">
+                    <input type="hidden" name="id" value="<?= (int)$p['id'] ?>">
+                    <button class="btn btn-sm btn-outline-danger" type="submit">Supprimer</button>
+                </form>
+            </td>
+        </tr>
     <?php endforeach; ?>
     <?php if (empty($pointures)): ?>
-        <tr><td colspan="4">Aucune pointure pour l'instant.</td></tr>
+        <tr><td colspan="4" class="text-center text-secondary py-4">Aucune pointure pour l'instant.</td></tr>
     <?php endif; ?>
+    </tbody>
 </table>
+</div></div>
 <?php require 'partials/footer.php'; ?>

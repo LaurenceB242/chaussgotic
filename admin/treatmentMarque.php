@@ -1,5 +1,4 @@
 <?php
-$titre = 'Chaussures'; require 'partials/header.php';
 require_once '../assets/functions.php';
 exigerAdmin();
 

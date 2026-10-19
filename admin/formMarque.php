@@ -1,5 +1,4 @@
 <?php
-$titre = 'Chaussures'; require 'partials/header.php';
 require_once '../assets/functions.php';
 exigerAdmin();
 
@@ -14,37 +13,34 @@ if ($id > 0) {
         exit;
     }
 }
+
+$titre = $id ? 'Modifier une marque' : 'Ajouter une marque';
+require 'partials/header.php';
 ?>
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $id ? 'Modifier' : 'Ajouter' ?> une marque</title>
-</head>
-<body>
-<?php require 'partials/nav.php'; ?>
+<h1 class="h3 mb-4"><?= e($titre) ?></h1>
 
-<h1><?= $id ? 'Modifier' : 'Ajouter' ?> une marque</h1>
-
+<div class="card"><div class="card-body">
 <form method="post" action="treatmentMarque.php" enctype="multipart/form-data">
     <input type="hidden" name="csrf" value="<?= e(csrfToken()) ?>">
     <input type="hidden" name="action" value="<?= $id ? 'update' : 'add' ?>">
     <input type="hidden" name="id" value="<?= $id ?>">
 
-    <label>Nom
-        <input type="text" name="nom" value="<?= e($marque['nom']) ?>" maxlength="100" required>
-    </label>
+    <div class="mb-3">
+        <label class="form-label">Nom</label>
+        <input class="form-control" type="text" name="nom" value="<?= e($marque['nom']) ?>" maxlength="100" required>
+    </div>
 
     <?php if ($marque['logo']): ?>
-        <p>Logo actuel : <img src="../images/marques/<?= e($marque['logo']) ?>" alt="" width="60"></p>
+        <p>Logo actuel : <img class="vignette" src="../images/marques/<?= e($marque['logo']) ?>" alt=""></p>
     <?php endif; ?>
 
-    <label>Logo <?= $id ? '(laisser vide pour garder l\'actuel)' : '' ?>
-        <input type="file" name="logo" accept="image/jpeg,image/png,image/webp">
-    </label>
+    <div class="mb-3">
+        <label class="form-label">Logo <?= $id ? "(laisser vide pour garder l'actuel)" : '' ?></label>
+        <input class="form-control" type="file" name="logo" accept="image/jpeg,image/png,image/webp">
+    </div>
 
-    <button type="submit">Enregistrer</button>
-    <a href="marques.php">Annuler</a>
+    <button class="btn btn-primary" type="submit">Enregistrer</button>
+    <a class="btn btn-outline-light" href="marques.php">Annuler</a>
 </form>
+</div></div>
 <?php require 'partials/footer.php'; ?>

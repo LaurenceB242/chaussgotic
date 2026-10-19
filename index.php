@@ -8,8 +8,9 @@ $pages = [
     'marque'     => 'pages/marque.php',
     'panier'     => 'pages/panier.php',
     'commandes'  => 'pages/commandes.php',
+    'profil'     => 'pages/profil.php',
 ];
-$protegees = ['commandes'];            // pages réservées aux connectés
+$protegees = ['commandes', 'profil'];
 
 $action = $_GET['action'] ?? 'home';
 $fichier = $pages[$action] ?? null;

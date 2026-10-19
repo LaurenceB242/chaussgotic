@@ -36,6 +36,7 @@ $flash = lireFlash();
                     </li>
                 <?php endforeach; ?>
             </ul>
+            <a class="btn btn-sm btn-outline-light me-2" href="../profil.php">Mon profil</a>
             <a class="btn btn-sm btn-outline-light me-2" href="../index.php">Voir le site</a>
             <form method="post" action="../deconnexion.php" class="d-inline">
                 <input type="hidden" name="csrf" value="<?= e(csrfToken()) ?>">

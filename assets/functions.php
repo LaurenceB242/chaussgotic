@@ -105,7 +105,7 @@ function lireFlash() {
 
 function uploadImage(array $file, string $dossier, &$erreur) {
     if ($file['error'] === UPLOAD_ERR_NO_FILE) {
-        return null; // pas d'image envoyée, ce n'est pas une erreur
+        return null; 
     }
     if ($file['error'] !== UPLOAD_ERR_OK) {
         $erreur = "Erreur pendant l'envoi de l'image.";
@@ -199,7 +199,7 @@ function panierLignes($bdd): array {
             LEFT JOIN stock s ON s.id_chaussure = c.id AND s.id_pointure = p.id
             WHERE c.id = ?", [$idP, $idC]);
 
-        if (!$l) {                       // chaussure supprimée depuis : on retire la ligne
+        if (!$l) {                 
             unset($_SESSION['panier'][$cle]);
             continue;
         }

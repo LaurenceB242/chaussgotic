@@ -1,5 +1,4 @@
 <?php
-$titre = 'Chaussures'; require 'partials/header.php';
 require_once '../assets/functions.php';
 exigerAdmin();
 
@@ -23,7 +22,6 @@ if ($id > 0) {
     }
 }
 
-// Si une erreur a eu lieu, on réaffiche ce qui avait été saisi
 if (isset($_SESSION['old'])) {
     $chaussure = array_merge($chaussure, $_SESSION['old']);
     unset($_SESSION['old']);
@@ -31,21 +29,14 @@ if (isset($_SESSION['old'])) {
 
 $marques   = fetchAll($bdd, "SELECT id, nom FROM marques ORDER BY nom");
 $pointures = fetchAll($bdd, "SELECT id, valeur FROM pointures ORDER BY valeur");
-?>
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $id ? 'Modifier' : 'Ajouter' ?> une chaussure</title>
-</head>
-<body>
-<?php require 'partials/nav.php'; ?>
 
-<h1><?= $id ? 'Modifier' : 'Ajouter' ?> une chaussure</h1>
+$titre = $id ? 'Modifier une chaussure' : 'Ajouter une chaussure';
+require 'partials/header.php';
+?>
+<h1 class="h3 mb-4"><?= e($titre) ?></h1>
 
 <?php if (empty($marques)): ?>
-    <p>Crée d'abord une <a href="formMarque.php">marque</a>.</p>
+    <div class="alert alert-warning">Crée d'abord une <a href="formMarque.php">marque</a>.</div>
 <?php else: ?>
 
 <form method="post" action="treatmentChaussure.php" enctype="multipart/form-data">
@@ -53,55 +44,76 @@ $pointures = fetchAll($bdd, "SELECT id, valeur FROM pointures ORDER BY valeur");
     <input type="hidden" name="action" value="<?= $id ? 'update' : 'add' ?>">
     <input type="hidden" name="id" value="<?= $id ?>">
 
-    <label>Nom
-        <input type="text" name="nom" value="<?= e($chaussure['nom']) ?>" maxlength="150" required>
-    </label>
+    <div class="card mb-4"><div class="card-body">
+        <h2 class="h5 mb-3">Informations</h2>
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label">Nom</label>
+                <input class="form-control" type="text" name="nom" value="<?= e($chaussure['nom']) ?>" maxlength="150" required>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Marque</label>
+                <select class="form-select" name="id_marque" required>
+                    <option value="">Choisir…</option>
+                    <?php foreach ($marques as $m): ?>
+                        <option value="<?= (int)$m['id'] ?>"
+                            <?= (int)$chaussure['id_marque'] === (int)$m['id'] ? 'selected' : '' ?>>
+                            <?= e($m['nom']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">Prix (€)</label>
+                <input class="form-control" type="text" name="prix" inputmode="decimal" value="<?= e($chaussure['prix']) ?>" required>
+            </div>
+            <div class="col-12">
+                <label class="form-label">Description</label>
+                <textarea class="form-control" name="description" rows="4"><?= e($chaussure['description']) ?></textarea>
+            </div>
+        </div>
+    </div></div>
 
-    <label>Marque
-        <select name="id_marque" required>
-            <option value="">Choisir…</option>
-            <?php foreach ($marques as $m): ?>
-                <option value="<?= (int)$m['id'] ?>"
-                    <?= (int)$chaussure['id_marque'] === (int)$m['id'] ? 'selected' : '' ?>>
-                    <?= e($m['nom']) ?>
-                </option>
+    <div class="card mb-4"><div class="card-body">
+        <h2 class="h5 mb-3">Images</h2>
+        <?php if ($images): ?>
+            <p class="text-secondary">Images actuelles (coche pour supprimer) :</p>
+            <div class="d-flex flex-wrap gap-3 mb-3">
+                <?php foreach ($images as $img): ?>
+                    <label class="text-center">
+                        <img class="d-block mb-1" style="width:90px;height:90px;object-fit:cover"
+                             src="../images/chaussures/<?= e($img['path']) ?>" alt="">
+                        <input class="form-check-input" type="checkbox" name="suppr_images[]" value="<?= (int)$img['id'] ?>">
+                        Supprimer
+                    </label>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+        <label class="form-label">Ajouter des images (JPG, PNG, WebP, 2 Mo max chacune)</label>
+        <input class="form-control" type="file" name="images[]" accept="image/jpeg,image/png,image/webp" multiple>
+    </div></div>
+
+    <div class="card mb-4"><div class="card-body">
+        <h2 class="h5 mb-3">Stock par pointure</h2>
+        <?php if (empty($pointures)): ?>
+            <p class="text-secondary">Aucune pointure. <a href="pointures.php">Ajoute-en d'abord.</a></p>
+        <?php else: ?>
+        <div class="row g-3">
+            <?php foreach ($pointures as $p): ?>
+                <div class="col-4 col-md-2">
+                    <label class="form-label">
+                        <?= rtrim(rtrim(number_format((float)$p['valeur'], 1, '.', ''), '0'), '.') ?>
+                    </label>
+                    <input class="form-control" type="number" name="stock[<?= (int)$p['id'] ?>]"
+                           min="0" max="9999" value="<?= (int)($stockActuel[$p['id']] ?? 0) ?>">
+                </div>
             <?php endforeach; ?>
-        </select>
-    </label>
+        </div>
+        <?php endif; ?>
+    </div></div>
 
-    <label>Prix (€)
-        <input type="text" name="prix" inputmode="decimal" value="<?= e($chaussure['prix']) ?>" required>
-    </label>
-
-    <label>Description
-        <textarea name="description" rows="5"><?= e($chaussure['description']) ?></textarea>
-    </label>
-
-    <h2>Images</h2>
-    <?php if ($images): ?>
-        <p>Images actuelles (coche pour supprimer) :</p>
-        <?php foreach ($images as $img): ?>
-            <label>
-                <img src="../images/chaussures/<?= e($img['path']) ?>" alt="" width="90">
-                <input type="checkbox" name="suppr_images[]" value="<?= (int)$img['id'] ?>"> Supprimer
-            </label>
-        <?php endforeach; ?>
-    <?php endif; ?>
-
-    <label>Ajouter des images (JPG, PNG, WebP, 2 Mo max chacune)
-        <input type="file" name="images[]" accept="image/jpeg,image/png,image/webp" multiple>
-    </label>
-
-    <h2>Stock par pointure</h2>
-    <?php foreach ($pointures as $p): ?>
-        <label>
-            <?= rtrim(rtrim(number_format((float)$p['valeur'], 1, '.', ''), '0'), '.') ?>
-            <input type="number" name="stock[<?= (int)$p['id'] ?>]" min="0" max="9999"
-                   value="<?= (int)($stockActuel[$p['id']] ?? 0) ?>" style="width:5em">
-        </label>
-    <?php endforeach; ?>
-
-    <p><button type="submit">Enregistrer</button> <a href="chaussures.php">Annuler</a></p>
+    <button class="btn btn-primary" type="submit">Enregistrer</button>
+    <a class="btn btn-outline-light" href="chaussures.php">Annuler</a>
 </form>
 
 <?php endif; ?>

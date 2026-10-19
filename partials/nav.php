@@ -1,4 +1,5 @@
 <nav class="navbar">
+
 <a href="index.php" class="logo">
     <img src="./images/logo/gothrose.svg" alt="chaussGotic" height="50">
     <p>ChaussGoth</p>
@@ -19,7 +20,7 @@
 
         <?php if (estConnecte()): ?>
             <a href="index.php?action=commandes">Mes commandes</a>
-            <a href="profil.php"><?= e($_SESSION['user']['nom']) ?></a>
+            <a href="index.php?action=profil"><?= e($_SESSION['user']['nom']) ?></a>
             <?php if (estAdmin()): ?><a href="admin/dashboard.php">Admin</a><?php endif; ?>
             <a href="deconnexion.php">Déconnexion</a>
         <?php else: ?>

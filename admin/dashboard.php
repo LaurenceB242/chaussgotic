@@ -34,7 +34,7 @@ require 'partials/header.php';
 </div>
 
 <div class="d-flex gap-2">
-    <a class="btn btn-primary" href="formChaussure.php">+ Chaussure</a>
+    <a class="btn btn-outline-light" href="formChaussure.php">+ Chaussure</a>
     <a class="btn btn-outline-light" href="formMarque.php">+ Marque</a>
     <a class="btn btn-outline-light" href="pointures.php">Pointures</a>
 </div>
